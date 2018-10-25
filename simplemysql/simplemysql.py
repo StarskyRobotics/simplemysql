@@ -124,7 +124,7 @@ class SimpleMysql:
 	def queryAll(self, sql, params = None):
 		"""Arbitrary SQL query and return all results
 		"""
-		cur = self._select(table, fields, where, order, limit)
+		cur = self.query(sql, params)
 		result = cur.fetchall()
 
 		rows = None
