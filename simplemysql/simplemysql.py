@@ -48,12 +48,12 @@ class SimpleMysql:
 
 		try:
 			if not self.conf["ssl"]:
-			    self.conn = MySQLdb.connect(db=self.conf['db'], host=self.conf['host'],
+				self.conn = MySQLdb.connect(db=self.conf['db'], host=self.conf['host'],
 										port=self.conf['port'], user=self.conf['user'],
 										passwd=self.conf['passwd'],
 										charset=self.conf['charset'])
 			else:
-			    self.conn = MySQLdb.connect(db=self.conf['db'], host=self.conf['host'],
+				self.conn = MySQLdb.connect(db=self.conf['db'], host=self.conf['host'],
 										port=self.conf['port'], user=self.conf['user'],
 										passwd=self.conf['passwd'],
 										ssl=self.conf['ssl'],
@@ -86,6 +86,19 @@ class SimpleMysql:
 
 		return row
 
+	def queryOne(self, sql, params = None):
+		"""Arbitrary SQL query and return a single result
+		"""
+		cur = self.query(sql, params)
+		result = cur.fetchone()
+
+		row = None
+		if result:
+			Row = namedtuple("Row", [f[0] for f in cur.description])
+			row = Row(*result)
+
+		return row
+
 
 	def getAll(self, table=None, fields='*', where=None, order=None, limit=None):
 		"""Get all results
@@ -98,6 +111,19 @@ class SimpleMysql:
 			limit = [limit1, limit2]
 		"""
 
+		cur = self._select(table, fields, where, order, limit)
+		result = cur.fetchall()
+
+		rows = None
+		if result:
+			Row = namedtuple("Row", [f[0] for f in cur.description])
+			rows = [Row(*r) for r in result]
+
+		return rows
+
+	def queryAll(self, sql, params = None):
+		"""Arbitrary SQL query and return all results
+		"""
 		cur = self._select(table, fields, where, order, limit)
 		result = cur.fetchall()
 
