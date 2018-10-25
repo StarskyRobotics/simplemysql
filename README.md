@@ -156,12 +156,29 @@ db.delete("books")
 db.delete("books", ("price > %s AND year < %s", [25, 1999]))
 ```
 
-## query(table)
+## query(sql)
 Run a raw SQL query. The MySQLdb cursor is returned.
 
 ```python
 # run a raw SQL query
 db.query("DELETE FROM books WHERE year > 2005")
+```
+
+## queryOne(sql)
+Run a raw SQL query. A single row is returned
+```python
+# run a raw SQL query
+row = db.query("SELECT * FROM books WHERE name = 'War and Peace")
+print(row.author)
+```
+
+## queryOne(sql)
+Run a raw SQL query. An array of results is returned
+```python
+# run a raw SQL query
+rows = db.query("SELECT * FROM books WHERE year = 2005)
+for row in rows:
+    print("%s by %s" % (row.title, row.author))
 ```
 
 ## commit()
