@@ -168,15 +168,15 @@ db.query("DELETE FROM books WHERE year > 2005")
 Run a raw SQL query. A single row is returned
 ```python
 # run a raw SQL query
-row = db.query("SELECT * FROM books WHERE name = 'War and Peace")
+row = db.queryOne("SELECT * FROM books WHERE name = 'War and Peace")
 print(row.author)
 ```
 
-## queryOne(sql)
+## queryAll(sql)
 Run a raw SQL query. An array of results is returned
 ```python
 # run a raw SQL query
-rows = db.query("SELECT * FROM books WHERE year = 2005)
+rows = db.queryAll("SELECT * FROM books WHERE year = 2005)
 for row in rows:
     print("%s by %s" % (row.title, row.author))
 ```
